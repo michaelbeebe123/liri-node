@@ -52,7 +52,7 @@ var spotifySong = (value) => {
     }).then(function(response){
         for (var i = 0; i < 5; i++) {
             var spotifyResults = 
-            "--------------------------------------------------" +
+            "-------------------------------------------------------------------------" +
             "\nArtist(s): " + response.tracks.items[i].artistsp[0].name +
             "\nSong Name: " + response.tracks.items[i].name +
             "\nAlbum Name: " + response.tracks.items[i].album.name +
@@ -60,13 +60,37 @@ var spotifySong = (value) => {
 
             console.log(spotifyResults);
         }
-    })
+    }).catch(function(err){
+        console.log(err);
+    });
 }
 
 var movieThis = (value) => {
+    axios.get("https://www.omdbapi.com/?t=" + value + "&y=&plot=short&apikey=trilogy")
+    .then(function(response){
+        var movieResults =
+        "-------------------------------------------------------------------------------" +
+        "\nMovie Title: " + response.data.Title +
+        "\nYear of Release" + response.datat.Year +
+        "\nIMBD Rating: " + response.data.imbdRating +
+        "\nRotten Tomatoes Rating: " + response.data.Ratings[1].Value +
+        "\Country Produced: " + response.data.Country +
+        "\nLanguage: " + response.data.Language +
+        "\nPlot: " + response.data.Plot + 
+        "\nActors/Actresses: " + response.data.Actors;
 
+        console.log(movieResults);
+    }).catch(function(error){
+        console.log(error);
+    });
 }
 
 var doThis = (value) => {
-
+    fs.readFile("random.txt", "utf8", function(error, data){
+        if (error) {
+            console.log(error);
+        }
+        var dataArray = data.split(",");
+        spotifySong(dataArray[0], dataArray[1]);
+    })
 }
