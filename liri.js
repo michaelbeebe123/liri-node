@@ -6,7 +6,7 @@ var axios = require("axios");
 var fs = require("fs");
 var moment = require("moment");
 moment().format();
-var inquirer = require("inquirer")
+// var inquirer = require("inquirer")
 
 var command = process.argv[2];
 var value = process.argv[3];
@@ -46,7 +46,21 @@ var concertThis = (value) => {
 }
 
 var spotifySong = (value) => {
+    spotify.search({
+        type: "track",
+        query: value
+    }).then(function(response){
+        for (var i = 0; i < 5; i++) {
+            var spotifyResults = 
+            "--------------------------------------------------" +
+            "\nArtist(s): " + response.tracks.items[i].artistsp[0].name +
+            "\nSong Name: " + response.tracks.items[i].name +
+            "\nAlbum Name: " + response.tracks.items[i].album.name +
+            "\nPreview Link: " + response.tracks.items[i].preview_url;
 
+            console.log(spotifyResults);
+        }
+    })
 }
 
 var movieThis = (value) => {
@@ -54,5 +68,5 @@ var movieThis = (value) => {
 }
 
 var doThis = (value) => {
-    
+
 }
