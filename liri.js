@@ -1,5 +1,4 @@
 require("dotenv").config();
-// IMPORTING DEPENDENCIES
 var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
@@ -9,36 +8,18 @@ var moment = require("moment");
 moment().format();
 // var inquirer = require("inquirer")
 
-var command = process.argv[2];
-var value = process.argv[3];
-
-switch (command) {
-    case "concert-this":
-        concertThis(value);
-        break;
-    case "spotify-this-song":
-        spotifySong(value);
-        break;
-    case "movie-this":
-        movieThis(value);
-        break;
-    case "do-what-it-says":
-        doThis(value);
-        break;
-};
-
 var concertThis = (value) => {
     axios.get("https://rest.bandsintown.com/artists/" + value + "/events?app_id=codingbootcamp")
     .then(function(response) {    
         for (var i = 0; i < response.data.length; i++) {
-            // var datetime = response.data[i].datetime;
-            // var dateArr = datetime.split('T');
+            var datetime = response.data[i].datetime;
+            var dateArray = datetime.split('T');
 
             var concertResults = 
                 "--------------------------------------------------------------------" +
                     "\nVenue Name: " + response.data[i].venue.name + 
                     "\nVenue Location: " + response.data[i].venue.city +
-                    "\nDate of the Event: " + moment(dateArr[0], "MM-DD-YYYY");
+                    "\nDate of the Event: " + moment(dateArray[0], "MM-DD-YYYY");
             console.log(concertResults);
         }
     }).catch(function (error) {
@@ -54,7 +35,7 @@ var spotifySong = (value) => {
         for (var i = 0; i < 5; i++) {
             var spotifyResults = 
             "-------------------------------------------------------------------------" +
-            "\nArtist(s): " + response.tracks.items[i].artistsp[0].name +
+            "\nArtist(s): " + response.tracks.items[i].artists[0].name +
             "\nSong Name: " + response.tracks.items[i].name +
             "\nAlbum Name: " + response.tracks.items[i].album.name +
             "\nPreview Link: " + response.tracks.items[i].preview_url;
@@ -95,3 +76,21 @@ var doThis = (value) => {
         spotifySong(dataArray[0], dataArray[1]);
     })
 }
+
+var command = process.argv[2];
+var value = process.argv[3];
+
+switch (command) {
+    case "concert-this":
+        concertThis(value);
+        break;
+    case "spotify-this-song":
+        spotifySong(value);
+        break;
+    case "movie-this":
+        movieThis(value);
+        break;
+    case "do-what-it-says":
+        doThis(value);
+        break;
+};
